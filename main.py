@@ -3,12 +3,13 @@ Food Recipe web app to learn different types  food recipes.
 
 '''
 from flask import *
-import Database
-import os
+import database
+import config
 
 #To start the application.
 app=Flask(__name__)
-app.secret_key='chiku123'
+app.secret_key=config.secret_key
+
 
 # Main function of application.
 @app.route('/')
@@ -26,7 +27,7 @@ def create():
 	first=request.form['firstname']
 	last=request.form['lastname']
 	# Check if email is already exist or not.
-	if Database.check_duplicate(request.form['email'])==True:
+	if database.check_duplicate(request.form['email'])==True:
 		email=request.form['email']
 	else:
 		return render_template('signup.html',error1='Email id is already exist')
@@ -39,15 +40,16 @@ def create():
 	gender=request.form['gender']
 	password=request.form['password']
 	# To store in database.
-	Database.createdata(first,last,email,phone,dob,gender,password)
+	database.createdata(first,last,email,phone,dob,gender,password)
 	return redirect('/')
+
 #login to session.
 @app.route('/login',methods=['POST'])
 def login():
 	email=request.form['email']
 	password=request.form['password']
 	# Check whether email and password is exist or not.
-	if Database.show(email,password)==True:
+	if database.show(email,password)==True:
 		#To create session object.
 		session['email']=request.form['email']
 		return redirect('/food')
@@ -70,8 +72,8 @@ def logout():
 def profile(email):
 	# Check whether the email is exist in session or not.
 	if 'email' in session:
-		profile=Database.profile(email)
-		food=Database.foodrecipe(email)
+		profile=database.profile(email)
+		food=database.foodrecipe(email)
 		first=profile[0][0]
 		last=profile[0][1]
 		email=profile[0][2]
@@ -89,8 +91,8 @@ def profile(email):
 def food():
 	# Check whether the email is exist in session or not.
 	if 'email' in session:
-		profile=Database.profile(session['email'])
-		food=Database.food()
+		profile=database.profile(session['email'])
+		food=database.food()
 
 		# To show the last uploaded content in database in first.
 		food1=food[::-1]
@@ -100,7 +102,7 @@ def food():
 		
 		# Add the profile and food to show that at the main frame.
 		foodrecipe=[[y[0],y[1],x[0],x[1],x[2],x[3],x[4],x[5]] for x in food1 \
-		for y in Database.profile(x[1])]
+		for y in database.profile(x[1])]
 
 		return render_template('food.html',first=first,last=last,\
 			email=email,foodrecipe=foodrecipe)
@@ -112,7 +114,7 @@ def food():
 def search():
 	# Check whether the email is exist in session or not.
 	if 'email' in session:
-		food=Database.food()
+		food=database.food()
 		searched=(request.form['search']).lower()
 		detailed=[]
 		for x in food:
@@ -121,7 +123,7 @@ def search():
 			elif searched in (x[3]).lower().split(','):
 				detailed.append(x)
 		foodrecipe=[[y[0],y[1],x[0],x[1],x[2],x[3],x[4],x[5]] for x in detailed\
-		 for y in Database.profile(x[1])]
+		 for y in database.profile(x[1])]
 		return render_template('foodsearch.html',foodrecipe=foodrecipe)
 
 # Searched Item list.
@@ -129,9 +131,9 @@ def search():
 def searched(item):
 	# Check whether the email is exist in session or not.
 	if 'email' in session:
-		food=Database.food()
+		food=database.food()
 		foodrecipe=[[y[0],y[1],x[0],x[1],x[2],x[3],x[4],x[5]] for x in food \
-		for y in Database.profile(x[1]) if item == x[2]]
+		for y in database.profile(x[1]) if item == x[2]]
 		return render_template('searched.html',foodrecipe=foodrecipe)
 	else:
 		return render_template('main.html',error="Login First.")
@@ -149,7 +151,7 @@ def edit():
 			process=request.form['process']
 			time=request.form['time']
 			# Edit the item list.
-			Database.edit(id1,request.form['email'],foodname,ingredients,process,time)
+			database.edit(id1,request.form['email'],foodname,ingredients,process,time)
 			return redirect(url_for('searched',item=foodname))
 		else:
 			return render_template('searched.html',error='The owner can update the information only.')
@@ -165,8 +167,7 @@ def addrecipe():
 		process=request.form['process']
 		
 		#Add food to the database.
-		Database.addfood(session['email'],item_name,ingredients,process)
+		database.addfood(session['email'],item_name,ingredients,process)
 		return redirect(url_for('profile',email=session['email']))
-
 if __name__=='__main__':
 	app.run(debug=True)

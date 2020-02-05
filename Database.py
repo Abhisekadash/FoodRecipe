@@ -1,14 +1,8 @@
-# import mysql.connector
-import mysql.connector
+# import config
+import config
 
-# To connect mysql databases.
-mydb=mysql.connector.connect(
-	host="localhost",
-	user="root",
-	passwd="chiku123",
-	database="foodrecipe"
-	)
 # Create cursor.
+mydb=config.config_db()
 mycursor=mydb.cursor()
 
 #for creating ids
@@ -44,7 +38,7 @@ def profile(email):
 	mycursor.execute(sql,val)
 	mylist=mycursor.fetchall()
 	return mylist
-	
+
 # To show the foood content on that profile only.
 def foodrecipe(email):
 	sql='select item,ingredients,process from food where email=%s'

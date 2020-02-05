@@ -5,8 +5,3 @@ step2 - In that database "create table userdata(id int primary key auto_incremen
 step3 - create another table "create table food(id int primary key auto_increment,email varchar(30),item varchar(30),ingredients varchar(300),process varchar(600),time varchar(5));
 ".
 step4 - In Database.py file write the database host,user,password.database.
-
-Todo:
------------------------------
-step2 - I already installed the packages to the virtual environment so no need to install the packages.
-step3 - 
