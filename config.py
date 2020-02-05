@@ -5,7 +5,7 @@ def config_db():
 	mydb=mysql.connector.connect(
 		host="localhost",
 		user="root",
-		passwd="chiku123",
+		passwd="",
 		database="foodrecipe"
 		)
 	return mydb
