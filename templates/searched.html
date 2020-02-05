@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Item</title>
+	<style type="text/css">
+		.header{
+			margin: auto;
+			background-color: blue;
+			width: 100%;
+			height: 50px;
+		}
+		.logo{
+			margin:auto;
+			float: left;
+			margin-top: 5px;
+		}
+		.search{
+			margin: auto;
+			float: left;
+			margin-top: 15px;
+			margin-left: 200px;
+		}
+		.logout{
+			float: right;
+			padding: 1.2%;
+			margin-right: 100px;
+		}
+		a{
+			color: white;
+			text-decoration: none;
+		}
+		.body{
+			margin: auto;
+			margin-top: 1%;
+			float: center;
+			width: 60%;
+			height:auto;
+			box-shadow: 0px 0px 3px 3px  black;
+			border-radius: 5%;
+			padding: 2%;
+		}
+		.sty{
+			border:4px double; 
+			border-radius: 10px; 
+			padding: 1%;
+
+		}
+	</style>
+	<script type="text/javascript">
+		function edit() {
+			document.getElementById('show').style.display='none';
+			document.getElementById('edit').style.display='block';
+		}
+	</script>
+</head>
+<body>
+	<div class="header">
+		<!-- Total Header sections.-->
+		<div class="logo">
+			<a href="{{url_for('food')}}"><img src="\static\images\Logo.png" style="width:40px;height:40px;margin-left: 10px;"></a>
+		</div>
+		<div class="search">
+			<form action="/search" method="POST">
+				<input type="text" name="search" style="width: 300px;">
+				<input type="submit" value="Search">
+			</form>
+		</div>
+		<div class="logout">
+			<a href="{{url_for('profile',email=email)}}" style="margin-right: 20px;"><b>{%print(first)%} {%print(last)%}</b></a>
+			<a href="{{url_for('logout')}}"><b>Logout</b></a>
+		</div>
+	</div>
+	<div class="body">
+		<b style="color: red;">{%print(error)%}</b>
+		{%for x in foodrecipe:%}
+		<div class="sty" id="show" style="display: block;">
+			<b>{%print(x[0])%}{%print(x[1])%}</b><img src="/static/images/edit_icon.png" style="float: right;" onclick="edit()"><br><hr>
+			<b style="margin-left: 20px;opacity: 70%;font-size: 20px;color: brown;">{%print(x[4])%}</b><br><br>
+			<div style="border:2px groove;padding: 4px;">
+				<b>Ingredients:</b><br><hr>
+				<b style="margin-left: 20px;opacity: 70%;">{%print(x[5])%}</b><br><br>
+			</div>
+			<div style="border: 2px groove;margin-top: 10px;padding: 4px;">
+				<b>Process:</b><hr>
+				<b style="margin-left: 20px;opacity: 70%;">{%print(x[6])%}</b><br><br>
+			</div>
+		</div>
+		{%endfor%}
+		<!-- Update the food recipe -->
+		{%for x in foodrecipe:%}
+		<div class="sty" id="edit" style="display: none;">
+			<form action="/edit" method="POST">
+			<input type="text" name="email" value="{%print(x[3])%}" style="display: none;">
+			<input type="text" name="id" value="{%print(x[2])%}" style="display: none;">
+			<b>Food Name:</b><br>
+			<input type="text" name="foodname" value="{%print(x[4])%}"><br><br>
+			<b>Ingredients:</b><br>
+			<input type="text" name="ingredients" value="{%print(x[5])%}"><br><br>
+			<b>Process:</b><br>
+			<textarea name="process" style="width:300px;height: 100px;">{%print(x[6])%}</textarea><br><br>
+			<b>Time:</b><br>
+			<input type="text" name="time">
+			<input type="submit">
+		</form>
+		</div>
+		{%endfor%}
+		</div>
+</body>
+</html>

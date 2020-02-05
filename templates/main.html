@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Food Recipe</title>
+<style type="text/css">
+	.center{
+		margin: auto;
+		float: center;
+		margin-top: 40px;
+		width: 22%;
+		background-color: #e0e0d1;
+	  	border: 3px solid #e0e0d1;
+	  	padding: 5%;
+	  	box-shadow: 0px 0px 7px 7px #989867;
+	}
+</style>
+</head>
+<body style="background-image: url('/static/images/body1.jpg');">
+<div class="center">
+	<img src="\static\images\Logo.png" width="70px" height="70px" style="float: right;">
+	<b style="font-size: 25px;">Login</b><br>
+	<b style="color: red;">{%print(error)%}</b>
+	<form action="/login" method="POST" style="padding-top: 50px;">
+		<b>Email or Phone:</b><br>
+		<input type="text" name="email" title="email" oninvalid="alert('You must fill out the email!');" required><br><br>
+		<b>Password:</b><br>
+		<input type="password" name="password" oninvalid="alert('You must fill out the password!');" required><br><br>
+		<input type="submit" value="Login" style="font-size: 15px;padding: 5px;font-weight: bold;">
+	</form><br>
+	<p>if doesn't have account,<a href="{{url_for('signup')}}" style="text-decoration: none;">SignUp</a></p>
+</div>
+</body>
+</html>

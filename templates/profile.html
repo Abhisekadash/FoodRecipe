@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Profile</title>
+	<style type="text/css">
+		.header{
+			margin: auto;
+			background-color: blue;
+			width: 100%;
+			height: 50px;
+		}
+		.logo{
+			margin:auto;
+			float: left;
+			margin-top: 5px;
+		}
+		.search{
+			margin: auto;
+			float: left;
+			margin-top: 15px;
+			margin-left: 200px;
+		}
+		.logout{
+			float: right;
+			padding: 1.2%;
+			margin-right: 100px;
+		}
+		a{
+			color: white;
+			text-decoration: none;
+		}
+		.hbody{
+			float: left;
+		}
+		.desc{
+			margin: auto;
+			width: 60%;
+			height:auto;
+			background-color: #e0e0d1;
+			padding: 8px;
+			border-radius: 10px;
+			box-shadow: 0px 0px 3px 3px #999999;
+			margin-top: 1%;
+		}
+		.sty{
+			margin: auto;
+			margin-top: 1%;
+			float: center;
+			height:auto;
+			border: 2px groove #999999;
+			border-radius: 5%;
+			padding: 2%;
+
+		}
+	</style>
+	<script type="text/javascript">
+		var i=[]
+		function add() {
+			i.push(document.getElementById('add').value);
+			document.getElementById('show').innerHTML=i;
+			document.getElementById('in').value=i;
+		}
+		function items() {
+			document.getElementById('items').style.display='block';
+		}
+	</script>
+</head>
+<body>
+	<div class="header">
+		<!-- Total Header sections.-->
+		<div class="logo">
+			<a href="{{url_for('food')}}"><img src="\static\images\Logo.png" style="width:40px;height:40px;margin-left: 10px;"></a>
+		</div>
+		<div class="search">
+			<form action="/search" method="POST">
+				<input type="text" name="search" style="width: 300px;">
+				<input type="submit" value="Search">
+			</form>
+		</div>
+		<div class="logout">
+			<a href="{{url_for('profile',email=email)}}" style="margin-right: 20px;"><b>{%print(first)%} {%print(last)%}</b></a>
+			<a href="{{url_for('logout')}}"><b>Logout</b></a>
+		</div>
+	</div>
+<div class="desc">
+		<center><b class="pro1">{%print(first)%} {%print(last)%}</b><a href="{{url_for('edit')}}"><img src="/static/images\Add.png" style="width: 15px;height: 15px;float: right;margin-top: 7px;margin-right: 10px;"></a></center><br><br><hr>
+<!-- Email -->
+		<b style="opacity: 60%;">Email :</b><br><hr>
+		<a class="pro" id="email" href="https://mail.google.com/mail/u/0/#inbox?compose=new" style="color: black;">{%print(email)%}</a><br><br><hr>
+
+<!-- Phone -->
+		<b style="opacity: 60%">phone :</b><br><hr>
+		<b class="pro">{%print(phone)%}</b><br><br><hr>
+
+<!-- Date Of Birth --> 
+		<b style="opacity: 60%">Date Of Birth :</b><br><hr>
+		<b class="pro">{%print(dob)%}</b><br><br><hr>
+
+<!-- Add Gender --> 
+		<b style="opacity: 60%">Gender :</b><br><hr>
+		<b class="pro">{%print(gender)%}</b><br><br><hr>
+<!--           Showingredients          -->
+<button style="float: right;" onclick="items()">Add Items</button>
+	
+		{%for x in food:%}
+		<a href="{{url_for('searched',item=x[0])}}" style="color:black;">
+		<div class="sty">
+			<b>Food Name:</b><br>
+			<b style="margin-left: 20px;opacity: 70%;">{%print(x[0])%}</b><br><br>
+			<b>Ingredients:</b><br>
+			<b style="margin-left: 20px;opacity: 70%;">{%print(x[1])%}</b><br><br>
+			<b>Process:</b><br>
+			<b style="margin-left: 20px;opacity: 70%;">{%print(x[2])%}</b><br>
+		</div></a>{%endfor%}
+	
+<!-- Add ingrediants-->
+	
+	<br>
+	<div id="items" style="display: none;">
+		<form action="/addrecipe" method="POST">
+			<b style="opacity: 60%;">Food Name</b><br>
+			<input type="text" name="items" placeholder="Items Name"><br><br>
+		 	<b style="opacity: 60%;">Ingredients</b><br>
+		 	<b id="show"></b><br>
+		 	<input type="text" id='in' name="ingredients" style="display: none;">
+			<input type="text" id="add" name="ingredients1" placeholder="Add ingredients">
+			<b onclick="add()">Add</b>
+			<br><br>
+			<b style="opacity: 60%;">Process</b><br>
+			<textarea placeholder="Write the process....." name="process" style="width: 50%;height: 100px;"></textarea>
+			<input type="submit" value="Add Item">
+		</form>
+	</div>
+</div>
+</body>
+</html>
